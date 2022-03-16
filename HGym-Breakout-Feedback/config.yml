@@ -1,0 +1,120 @@
+project:
+  useAWS: False 
+  awsSetup:
+    bucket: projects.irll # working bucket in AWS
+    region: ca-central-1 # working AWS region
+    rootDomain: irll.net # a fully qualified domain name without 'https://'
+    cpu: 2 # int 1,2, or 4
+    memory: 10 # int 1-30
+
+  events:
+    startServerStep: 1 # int ? #this
+    stopServerStep: 16  # TODO: Change this to final step after testing is done
+  id: exp-breakout-binary-feedback # Letters, Numbers and '-' only! #only lower case #change this
+  live: True # bool
+  maxRuntime: 20 # int in minutes.
+  name: breakout_binary_feedback # str #change this 
+  researcher: Edan Meyer
+  ssl:
+    fullchain: SSL/fullchain.pem # path to fullchain.pem file excluding bucket name
+    privkey: SSL/privkey.pem # path to privkey.pem file excluding bucket name
+    sslBucket: projects.irll # bucket name for resolving paths above
+
+  steps: #in the step file folder # any number of steps needed with corresponding filenames
+    1: consentForm.html
+    2: initialSurvey.html
+    3: playInstructions.html
+    4: game
+    5: nextRound.html
+    6: game
+    7: nextRound.html
+    8: game
+    9: feedbackInstructions.html
+    10: game
+    11: nextRound.html
+    12: game
+    13: nextRound.html
+    14: game
+    15: postGameSurvey.html
+    16: endScreen.html
+    finalStep: endScreen.html #put the file name of the last step again here # required, filename can be same as last numbered step
+  teamMembers: Edan # str
+
+trial:
+  trial_types:
+    - play_game
+    - give_feedback # play_game
+    - play_game
+    - play_game
+    - give_feedback
+    - give_feedback
+    - give_feedback
+  actionBufferLifespan: 1 # int
+  maxEpisodes: 1 # int
+  game: ALE/MsPacman-v5 # full environment name
+  dataFile: episode # episode or trial
+  s3upload: True
+  actionSpace: # the appropriate action space for environment. Order matters
+    - noop
+    - up
+    - right
+    - left
+    - down
+    - upright
+    - upleft
+    - downright
+    - downleft
+  frameRateStepSize: 5 # int Optional if allowFrameRateChange = False
+  minFrameRate: 1 # int Optional if allowFrameRateChange = False
+  maxFrameRate: 60 # int Optional if allowFrameRateChange = False
+  frameskip: 1 # int Optional how many frames to skip for playing game phase
+  allowFrameRateChange: False # bool
+  startingFrameRate: 30 # int Required
+  ui: # Default UI
+    left: True
+    right: True
+    up: True
+    down: True
+    start: True
+    stop: True #False
+    pause: True
+    reset: False
+    trainOffline: False
+    trainOnline: False
+    good: False
+    bad: False
+    fpsSet: False
+    fpsUp: False
+    fpsDown: False
+  play_game_ui: # to include ui button set to True, False buttons will not be shown
+    left: True
+    right: True
+    up: True
+    down: True
+    start: True
+    stop: True #False
+    pause: True
+    reset: False
+    trainOffline: False
+    trainOnline: False
+    good: False
+    bad: False
+    fpsSet: False
+    fpsUp: False
+    fpsDown: False
+  give_feedback_ui: # to include ui button set to True, False buttons will not be shown
+    left: False
+    right: False
+    up: False
+    down: False
+    start: True
+    stop: False #False
+    pause: True
+    reset: False
+    trainOffline: False
+    trainOnline: False
+    good: True
+    bad: True
+    fpsSet: True
+    fpsUp: True
+    fpsDown: True

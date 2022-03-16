@@ -1,0 +1,56 @@
+trial:
+  actionBufferLifespan: 1
+  actionSpace:
+  - noop
+  - up
+  - right
+  - left
+  - down
+  - upright
+  - upleft
+  - downright
+  - downleft
+  allowFrameRateChange: false
+  bucket: projects.irll
+  dataFile: episode
+  frameRateStepSize: 5
+  frameskip: 1
+  game: ALE/MsPacman-v5
+  give_feedback_ui:
+  - start
+  - pause
+  - good
+  - bad
+  - fpsSet
+  - fpsUp
+  - fpsDown
+  maxEpisodes: 1
+  maxFrameRate: 60
+  minFrameRate: 1
+  play_game_ui:
+  - left
+  - right
+  - up
+  - down
+  - start
+  - stop
+  - pause
+  projectId: exp-breakout-binary-feedback
+  s3upload: true
+  startingFrameRate: 30
+  trial_types:
+  - play_game
+  - give_feedback
+  - play_game
+  - play_game
+  - give_feedback
+  - give_feedback
+  - give_feedback
+  ui:
+  - left
+  - right
+  - up
+  - down
+  - start
+  - stop
+  - pause

@@ -1,0 +1,8 @@
+**/data
+**/__pycache__
+**/Trials
+**/ReplayData/**
+*.pem
+*.log
+
+!.gitkeep
