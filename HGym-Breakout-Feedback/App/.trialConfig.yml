@@ -10,14 +10,15 @@ trial:
   - upleft
   - downright
   - downleft
-  allowFrameRateChange: false
+  allowFrameRateChange: true
   bucket: projects.irll
   dataFile: episode
   frameRateStepSize: 5
-  frameskip: 1
+  frameskip: 2
   game: ALE/MsPacman-v5
   give_feedback_ui:
   - start
+  - stop
   - pause
   - good
   - bad
@@ -43,14 +44,7 @@ trial:
   - give_feedback
   - play_game
   - play_game
+  - play_game
   - give_feedback
   - give_feedback
   - give_feedback
-  ui:
-  - left
-  - right
-  - up
-  - down
-  - start
-  - stop
-  - pause

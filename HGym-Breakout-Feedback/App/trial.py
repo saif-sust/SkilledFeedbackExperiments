@@ -128,6 +128,7 @@ class Trial():
         Reads messages sent from websocket, handles commands as priority then 
         actions. Logs entire message in self.nextEntry
         '''
+        logging.info('Message: ' + str(message))
         if not self.userId and 'userId' in message:
             self.userId = message['userId'] or f'user_{shortuuid.uuid()}'
             self.send_ui()
@@ -231,12 +232,10 @@ class Trial():
             raise TypeError("Render Dictionary is not JSON serializable")
 
     def send_ui(self):
-        defaultUI = ['left','right','up','down','start','pause', 'abc']
+        defaultUI = ['left','right','up','down','start','pause']
         try:
             ui_settings = self.config.get(self.trial_type + '_ui', defaultUI)
-            logging.info('default_ui_settings: ' + str(self.config.get('ui', defaultUI)))
-            logging.info('ui_settings: ' + str(ui_settings))
-            self.pipe.send(json.dumps({'UI': self.config.get('ui', defaultUI)})) # ui_settings}))
+            self.pipe.send(json.dumps({'UI': ui_settings}))
         except:
             raise TypeError("Render Dictionary is not JSON serializable")
 
@@ -298,6 +297,7 @@ TRIAL_DATA_DIR = 'ReplayData'
 
 class FeedbackTrial(Trial):
     def __init__(self, pipe):
+        self.human_feedback = 0
         super().__init__(pipe)
 
     def _get_trial_path(self, trial_idx):
@@ -321,10 +321,24 @@ class FeedbackTrial(Trial):
         '''
         envState = self.agent.step(self.humanAction)
         # TODO: Change this update entry to only take in relevant data for feedback
-        self.update_entry(envState)
+        self.update_entry({'step': envState['step'], 'feedback': self.human_feedback})
+        self.human_feedback = 0
         self.save_entry()
         if envState['done']:
             self.reset()
+            
+    def handle_command(self, command:str):
+        '''
+        Deals with allowable commands from user. To add other functionality
+        add commands.
+        '''
+        # Call parent function and then check additional commands
+        super().handle_command(command)
+        command = command.strip().lower()
+        if command == 'good':
+            self.human_feedback = 1
+        elif command == 'bad':
+            self.human_feedback = -1
 
 TRIAL_TYPE_MAPPING = {
     'play_game': Trial,
