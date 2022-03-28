@@ -4,7 +4,7 @@ RUN apt-get update && apt-get install -y \
 	xvfb \
 	python3-opengl
 
-COPY App/* ./
+COPY App/ ./
 RUN mkdir ./Trials
 COPY requirements.txt .
 

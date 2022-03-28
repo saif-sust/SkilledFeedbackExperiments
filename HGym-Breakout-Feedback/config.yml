@@ -43,8 +43,6 @@ project:
 trial:
   trial_types:
     - play_game
-    - give_feedback # play_game
-    - play_game
     - play_game
     - play_game
     - give_feedback
@@ -68,9 +66,9 @@ trial:
   frameRateStepSize: 5 # int Optional if allowFrameRateChange = False
   minFrameRate: 1 # int Optional if allowFrameRateChange = False
   maxFrameRate: 60 # int Optional if allowFrameRateChange = False
-  frameskip: 2 # int Optional how many frames to skip for playing game phase
+  frameskip: 1 # int Optional how many frames to skip for playing game phase
   allowFrameRateChange: True # bool
-  startingFrameRate: 30 # int Required
+  startingFrameRate: 60 # int Required
   play_game_ui: # to include ui button set to True, False buttons will not be shown
     left: True
     right: True
@@ -100,6 +98,6 @@ trial:
     trainOnline: False
     good: True
     bad: True
-    fpsSet: True
-    fpsUp: True
-    fpsDown: True
+    fpsSet: False
+    fpsUp: False
+    fpsDown: False

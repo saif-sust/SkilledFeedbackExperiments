@@ -17,7 +17,7 @@ def get_trial_type(trial_type):
     return TRIAL_TYPE_MAPPING[trial_type]
 
 class Trial():
-    def __init__(self, pipe):
+    def __init__(self, pipe, trial_idx=0):
         self.config = load_config()
         self.pipe = pipe
         self.frameId = 0
@@ -35,6 +35,7 @@ class Trial():
         self.filename = None
         self.path = None
         self.trial_type = TYPE_TRIAL_MAPPING[type(self)]
+        self.trial_idx = trial_idx
 
         self.start()
         self.run()
@@ -292,23 +293,19 @@ class Trial():
         self.filename = filename
         self.path = path
 
-FEEDBACK_TRIAL_IDX = 0
 TRIAL_DATA_DIR = 'ReplayData'
 
 class FeedbackTrial(Trial):
-    def __init__(self, pipe):
+    def __init__(self, pipe, trial_idx=0):
         self.human_feedback = 0
-        super().__init__(pipe)
+        super().__init__(pipe, trial_idx)
 
     def _get_trial_path(self, trial_idx):
         return f'{TRIAL_DATA_DIR}/replay_data_{trial_idx}'
 
     def start(self):
-        global FEEDBACK_TRIAL_IDX
-
-        trial_path = self._get_trial_path(FEEDBACK_TRIAL_IDX)
-        logging.info(f'Starting feedback trial {FEEDBACK_TRIAL_IDX} with path {trial_path}')
-        FEEDBACK_TRIAL_IDX += 1
+        trial_path = self._get_trial_path(self.trial_idx)
+        logging.info(f'Starting feedback trial {self.trial_idx} with path {trial_path}')
 
         self.agent = ReplayAgent()
         self.agent.start(trial_path) # self.config.get('game'))

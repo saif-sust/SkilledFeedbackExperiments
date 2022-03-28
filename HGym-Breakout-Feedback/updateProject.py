@@ -49,9 +49,15 @@ def upload_file(file, bucket, projectId):
 def upload_step_files(steps, projectConfig):
     logging.info('Uploading StepFiles...')
     for file in steps:
-        # TODO: Change this to work for multiple games
         if file and file != 'game':
             upload_file(file, projectConfig.get('awsSetup').get('bucket'), projectConfig.get('id'))
+    # step_files = os.listdir('StepFiles')
+    # for file in steps:
+    #     if file != 'game' and file not in step_files:
+    #         logging.error(f'File {file} Not Found in ./StepFiles')
+
+    # for file in step_files:
+    #     upload_file(file, projectConfig.get('awsSetup').get('bucket'), projectConfig.get('id'))
     logging.info('StepFiles Uploaded')
 
 def update_project_master_list(projectConfig):

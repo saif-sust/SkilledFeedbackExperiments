@@ -1,14 +1,15 @@
-import asyncio, websockets, json, sys, pathlib, ssl
+import asyncio, websockets, json, os, sys, pathlib, ssl
+import json
 from trial import get_trial_type
 from multiprocessing import Process, Pipe
 from s3upload import Uploader
 import logging
 import yaml
 
+TRIAL_COUNTER_FILE = 'trial_counter.json'
 ADDRESS = None # set desired IP for development 
 PORT = 5000 # if port is changed here it must also be changed in Dockerfile
 devEnv = False
-trial_counter = 0
 
 logging.basicConfig(filename='server.log', level=logging.INFO)
 
@@ -32,6 +33,7 @@ def main():
 
     config = load_config()
     configured_handler = lambda w, p: handler(w, p, config)
+    init_trial_counter() # Initializes tracking for the current type of trial
     if len(sys.argv) > 1 and sys.argv[1] == 'dev':
         start_server = websockets.serve(configured_handler, ADDRESS, PORT)
         devEnv = True
@@ -42,19 +44,61 @@ def main():
     asyncio.get_event_loop().run_until_complete(start_server)
     asyncio.get_event_loop().run_forever()
 
+def init_trial_counter():
+    with open(TRIAL_COUNTER_FILE, 'w+') as f:
+        contents = {'total': 0}
+        json.dump(contents, f)
+
+def update_trial_counter(trial_type):
+    # Open the TRIAL_COUNTER_FILE json file, and add one to the value
+    # with key `trial_type`
+    # If it does not exist, create it and set the value to 1
+    with open(TRIAL_COUNTER_FILE, 'r') as f:
+        data = json.load(f)
+
+    if trial_type in data:
+        data[trial_type] += 1
+        data['total'] += 1
+    else:
+        data[trial_type] = 1
+        if 'total' not in data:
+            data['total'] = 1
+        else:
+            data['total'] += 1
+
+    with open(TRIAL_COUNTER_FILE, 'w') as f:
+        json.dump(data, f)
+
+def get_trial_counter(trial_type=None):
+    if not os.path.isfile(TRIAL_COUNTER_FILE):
+        with open(TRIAL_COUNTER_FILE, 'w+') as f:
+            contents = {'total': 0}
+            if trial_type:
+                contents[trial_type] = 0
+            json.dump(contents, f)
+
+    with open(TRIAL_COUNTER_FILE, 'r') as f:
+        data = json.load(f)
+    if trial_type:
+        if trial_type in data:
+            return data[trial_type]
+        else:
+            return 0
+    return data
+    
 async def handler(websocket, path, config):
     '''
     On websocket connection, starts a new userTrial in a new Process.
     Then starts async listeners for sending and recieving messages.
     '''
-    global trial_counter
-
+    trial_counter = get_trial_counter('total')
     upPipe, downPipe = Pipe()
     trial_type = config['trial_types'][trial_counter]
+    trial_type_counter = get_trial_counter(trial_type)
     trial_cls = get_trial_type(trial_type)
     logging.info('------- STARTING TRIAL WITH TYPE: ' + trial_type + ' ' + str(trial_counter) + ' -------')
-    trial_counter += 1
-    userTrial = Process(target=trial_cls, args=(downPipe,))
+    update_trial_counter(trial_type)
+    userTrial = Process(target=trial_cls, args=(downPipe, trial_type_counter))
     userTrial.start()
     consumerTask = asyncio.ensure_future(consumer_handler(websocket, upPipe))
     producerTask = asyncio.ensure_future(producer_handler(websocket, upPipe))

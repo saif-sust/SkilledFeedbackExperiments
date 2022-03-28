@@ -53,7 +53,7 @@ trial:
   bucket: projects.irll
   dataFile: episode
   frameRateStepSize: 5
-  frameskip: 2
+  frameskip: 1
   game: ALE/MsPacman-v5
   give_feedback_ui:
   - start
@@ -61,9 +61,6 @@ trial:
   - pause
   - good
   - bad
-  - fpsSet
-  - fpsUp
-  - fpsDown
   maxEpisodes: 1
   maxFrameRate: 60
   minFrameRate: 1
@@ -77,10 +74,8 @@ trial:
   - pause
   projectId: exp-breakout-binary-feedback
   s3upload: true
-  startingFrameRate: 30
+  startingFrameRate: 60
   trial_types:
-  - play_game
-  - give_feedback
   - play_game
   - play_game
   - play_game

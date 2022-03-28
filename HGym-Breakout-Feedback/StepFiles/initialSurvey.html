@@ -9,31 +9,30 @@ label {
 textarea {
 	resize: both;
 }
-
 </style>
 
 <h1>Section 1: Survey Questions</h1>
 <h3>Please select one answer for each of the following questions.</h3>
 <h3>When you finish the questionnaire, please click "Submit" at the bottom</h3>
-<p>1. What kind of an AI experience do you have? </p>
+<p>1. What kind of experience do you have with AI? </p>
 <input type="radio" id="media" name="experience" value="media">
 <label for="media">I know AI mostly from media</label><br>
 <input type="radio" id="work" name="experience" value="work">
 <label for="work">I use AI technology at my work</label><br>
 <input type="radio" id="class" name="experience" value="class">
-<label for="class">I took at least one course AI</label><br>
+<label for="class">I took at least one course on AI</label><br>
 <input type="radio" id="none" name="experience" value="none">
 <label for="none">None of the above</label><br>
 
 <p>2. How often do you play video games?</p>
 <input type="radio" id="daily" name="game" value="daily">
-<label for="daily">Daily</label><br>
+<label for="daily">Daily (1+ hour most days)</label><br>
 <input type="radio" id="weekly" name="game" value="weekly">
-<label for="weekly">Weekly</label><br>
+<label for="weekly">Weekly (~1-5 hours per week)</label><br>
 <input type="radio" id="monthly" name="game" value="monthly">
-<label for="monthly">Monthly</label><br>
+<label for="monthly">Monthly (~1-5 hours per month)</label><br>
 <input type="radio" id="less" name="game" value="less">
-<label for="less">Less than monthly</label><br>
+<label for="less">Less than monthly (less than 1 hour per month)</label><br>
 
 <p>3. How old are you?</p>
 <input type="radio" id="18-24" name="age" value="18-24">
@@ -47,17 +46,27 @@ textarea {
 <input type="radio" id="over51" name="age" value="over51">
 <label for="over51">51 or older</label><br>
 
-<p>4. How much have you played the game PacMan before (including variations like Ms. PacMan)? (TODO: Change per game)</p>
+<p>4. What is the highest level of formal education that you have completed?</p>
+<input type="radio" id="HS" name="education" value="HS">
+<label for="HS">High school/GED</label><br>
+<input type="radio" id="college" name="education" value="college">
+<label for="college">College</label><br>
+<input type="radio" id="gradschool" name="education" value="gradschool">
+<label for="gradschool">Graduate School</label><br>
+<input type="radio" id="trade" name="education" value="trade">
+<label for="trade">Trade School</label><br>
+
+<p id="GameQuestion">5. How much have you played the game PacMan before (including variations like Ms. PacMan)?</p>
 <input type="radio" id="never" name="game_exp" value="never">
 <label for="never">Never</label><br>
 <input type="radio" id="little" name="game_exp" value="little">
-<label for="little">A little</label><br>
+<label for="little">A little (~1-2 hours)</label><br>
 <input type="radio" id="moderate" name="game_exp" value="moderate">
-<label for="moderate">A moderate amount</label><br>
+<label for="moderate">A moderate amount (~2-10 hours)</label><br>
 <input type="radio" id="lot" name="game_exp" value="lot">
-<label for="lot">A lot</label><br>
+<label for="lot">A lot (~10+ hours)</label><br>
 
-<p>5. On a scale of 1-5 where 5 is the most skilled and 1 the least, how skilled are you at the game?
+<p>6. On a scale of 1-5 where 5 is the most skilled and 1 the least, in your optinion, how skilled are you at the game?
 (N/A if never played before)</p>
 <input type="radio" id="na" name="game_exp" value="na">
 <label for="na">N/A</label><br>
@@ -72,6 +81,5 @@ textarea {
 <input type="radio" id="5" name="game_exp" value="5">
 <label for="5">5</label><br>
 
-<p>6. Any other comments?</p>
+<p>7. Any other comments?</p>
 <textarea name="comment" cols=40 rows=5 defaultValue="this is comment"></textarea>
-
