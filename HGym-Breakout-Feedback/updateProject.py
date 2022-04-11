@@ -1,11 +1,12 @@
+import argparse
 import json, yaml, boto3, os, logging, sys, subprocess
 from dotenv import load_dotenv
 
 load_dotenv()
 
-def load_config():
+def load_config(config_name='config.yml'):
     logging.info('Loading Config...')
-    with open('config.yml','r') as infile:
+    with open(config_name,'r') as infile:
         try:
             config = yaml.load(infile, Loader=yaml.FullLoader)
         except:
@@ -25,7 +26,6 @@ def check_steps(projectConfig):
     stepFiles = os.listdir('StepFiles')
     steps = projectConfig.get('steps').values()
     for step in steps:
-        # TODO: Change this to work for multiple games
         if step and step != 'game':
             assert step in stepFiles, f'File not found Error: File "{step}" Not Found in ./StepFiles'
     logging.info('StepFiles found.')
@@ -183,7 +183,6 @@ def check_dependencies():
         assert output, f'{depend} not found. Please install {depend} before continuing.' 
     return
 
-# TODO: Look into SSL stuff
 def get_ssl_cert(projectConfig):
     logging.info('Checking for SSL Cert...')
     sslBucket = projectConfig.get('ssl').get('sslBucket')
@@ -229,10 +228,18 @@ def set_dotenv():
     os.system('cp .env App/.env')
     logging.info('.env Copied.')
 
+# Create argument handler and parse arguments for config file
+def get_args():
+    parser = argparse.ArgumentParser(description='Create a new project.')
+    parser.add_argument('-c', '--config', help='Path to config file.', default='config.yml')
+    args = parser.parse_args()
+    return args
+
 def main():
     #logging.basicConfig(filename='Logs/updateProject.log', level=logging.INFO)
+    args = get_args()
     logging.basicConfig(stream=sys.stdout, level=logging.INFO)
-    projectConfig, trialConfig = load_config()
+    projectConfig, trialConfig = load_config(args.config)
     trialConfig = set_trial_config(trialConfig, projectConfig)
     if projectConfig.get('useAWS'):
         check_dependencies()

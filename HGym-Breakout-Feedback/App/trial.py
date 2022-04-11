@@ -49,7 +49,7 @@ class Trial():
         returned. 
         '''
         self.agent = Agent()
-        self.agent.start(self.config.get('game'), self.config.get('frameskip', 1))
+        self.agent.start(self.config.get('game'), self.config.get('frameskip', 1), self.config.get('maxEpisodeFrames', -1))
 
     def run(self):
         '''
@@ -81,7 +81,13 @@ class Trial():
             if self.outfile:
                 self.outfile.close()
                 if self.config.get('s3upload'):
-                    self.pipe.send({'upload':{'projectId':self.projectId ,'userId':self.userId,'file':self.filename,'path':self.path, 'bucket': self.config.get('bucket')}})
+                    self.pipe.send({'upload':{
+                        'projectId': self.projectId,
+                        'userId': self.userId,
+                        'file': self.filename,
+                        'path': self.path,
+                        'bucket': self.config.get('bucket'),
+                        'gzip': True}})
             self.create_file()
             self.episode += 1
 
@@ -105,7 +111,14 @@ class Trial():
             self.save_record()
         if self.outfile:
             self.outfile.close()
-            self.pipe.send({'upload':{'projectId':self.projectId,'userId':self.userId,'file':self.filename,'path':self.path}})
+            self.pipe.send({'upload':{
+                'projectId': self.projectId,
+                'userId': self.userId,
+                'file': self.filename,
+                'path': self.path,
+                'bucket': self.config.get('bucket'),
+                'gzip': True}})
+        
         self.play = False
         self.done = True
 
@@ -317,7 +330,6 @@ class FeedbackTrial(Trial):
         Checks for DONE from Agent/Env
         '''
         envState = self.agent.step(self.humanAction)
-        # TODO: Change this update entry to only take in relevant data for feedback
         self.update_entry({'step': envState['step'], 'feedback': self.human_feedback})
         self.human_feedback = 0
         self.save_entry()

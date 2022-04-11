@@ -2,38 +2,34 @@ trial:
   actionBufferLifespan: 1
   actionSpace:
   - noop
+  - fire
   - up
-  - right
-  - left
   - down
-  - upright
-  - upleft
-  - downright
-  - downleft
-  allowFrameRateChange: true
+  - rightfire
+  - leftfire
+  allowFrameRateChange: false
   bucket: projects.irll
   dataFile: episode
   frameRateStepSize: 5
   frameskip: 1
-  game: ALE/MsPacman-v5
+  game: ALE/Pong-v5
   give_feedback_ui:
   - start
   - stop
   - pause
   - good
   - bad
+  maxEpisodeFrames: 300
   maxEpisodes: 1
   maxFrameRate: 60
   minFrameRate: 1
   play_game_ui:
-  - left
-  - right
   - up
   - down
   - start
   - stop
   - pause
-  projectId: exp-breakout-binary-feedback
+  projectId: exp-pong-binary-feedback
   s3upload: true
   startingFrameRate: 60
   trial_types:

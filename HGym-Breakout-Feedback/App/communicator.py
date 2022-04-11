@@ -162,8 +162,10 @@ async def upload_to_s3(message):
     path = message['upload']['path']
     projectId = message['upload']['projectId']
     userId = message['upload']['userId']
-    bucket = message['upload']['bucket']
-    Process(target=Uploader, args=(projectId, userId, file, path, bucket)).start()
+    bucket =  message['upload']['bucket']
+    compress = message['upload']['gzip']
+    logging.info(f'Starting upload of {file} to s3...')
+    Process(target=Uploader, args=(projectId, userId, file, path, bucket, compress)).start()
 
 if __name__ == "__main__":
     main()

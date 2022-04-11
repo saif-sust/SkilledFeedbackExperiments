@@ -11,25 +11,32 @@ of these functions, adapt as required for individual research goals.
 '''
 import pickle
 import gym
+from gym.wrappers import TimeLimit
 
 class Agent():
     '''
     Use this class as a convenient place to store agent state.
     '''
 
-    def start(self, game:str, frameskip:int=1):
+    def start(self, game:str, frameskip:int=1, max_frames:int=-1):
         '''
         Starts an OpenAI gym environment.
         Caller:
             - Trial.start()
         Inputs:
             -   game (Type: str corresponding to allowable gym environments)
-        Returs:
+        Returns:
             - env (Type: OpenAI gym Environment as returned by gym.make())
             Mandatory
         '''
-        self.env = gym.make(game, frameskip=frameskip, repeat_action_probability=0, full_action_space=False)
-        return
+        if 'ALE/' in game:
+            self.env = gym.make(game, frameskip=frameskip, repeat_action_probability=0, full_action_space=False)
+        else:
+            self.env = gym.make(game)
+
+        if max_frames > 0:
+            self.env = TimeLimit(self.env, max_episode_steps=max_frames)
+        return self.env
     
     def step(self, action:int):
         '''
@@ -105,14 +112,10 @@ class ReplayAgent():
             - Trial.start()
         Inputs:
             -   game (Type: str corresponding to allowable gym environments)
-        Returs:
-            - env (Type: OpenAI gym Environment as returned by gym.make())
-            Mandatory
         '''
         self.step_data = read_replay_buffer(replay_path)
         self.step_idx = 0
         self.curr_obs = self.step_data[self.step_idx]['observation']
-        # TODO: Confirm whether or not I need self.env to be specified here
     
     def step(self, action:int):
         '''
