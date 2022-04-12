@@ -8,3 +8,4 @@ Pillow==8.2.0
 boto3==1.14.20
 python-dotenv==0.14.0
 pyYaml==5.4
+gym-super-mario-bros==7.3.2

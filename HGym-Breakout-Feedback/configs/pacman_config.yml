@@ -49,6 +49,10 @@ trial:
     - give_feedback
     - give_feedback
     - give_feedback
+  feedback_files:
+    - pacman_replay_0
+    - pacman_replay_1
+    - pacman_replay_2
   actionBufferLifespan: 1 # int
   maxEpisodes: 1 # int
   maxEpisodeFrames: 14400 # 60 * 60 * 4, 4 min at 60 FPS

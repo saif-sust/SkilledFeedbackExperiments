@@ -37,6 +37,15 @@ class Trial():
         self.trial_type = TYPE_TRIAL_MAPPING[type(self)]
         self.trial_idx = trial_idx
 
+        if self.config.get('advancedActionSpace') is not None:
+            self.active_keys = set([])
+            self.valid_keys = set(self.config.get('validKeys'))
+            action_keys = self.config.get('advancedActionSpace')
+            self.key_act_map = {frozenset(key_set): i for i, key_set in enumerate(action_keys)}
+            self.action_space_type = 'advanced'
+        else:
+            self.action_space_type = 'simple'
+
         self.start()
         self.run()
 
@@ -153,8 +162,10 @@ class Trial():
             self.handle_command(message['command'])
         elif 'changeFrameRate' in message and message['changeFrameRate']:
             self.handle_framerate_change(message['changeFrameRate'])
-        elif 'action' in message and message['action']:
+        elif 'action' in message and message['action'] and self.action_space_type == 'simple':
             self.handle_action(message['action'])
+        elif 'KeyboardEvent' in message and self.action_space_type == 'advanced':
+            self.handle_advanced_action(message['KeyboardEvent'])
         self.update_entry(message)
 
     def handle_command(self, command:str):
@@ -210,6 +221,22 @@ class Trial():
         else:
             actionCode = 0
         self.humanAction = actionCode
+
+    def handle_advanced_action(self, event:dict):
+        '''
+        Translates action to int and resets action buffer if action !=0
+        '''
+# {'KeyboardEvent': {'KEYDOWN': [' ', 32]}, 'frameCount': 111, 'frameId': 111}
+        if 'KEYDOWN' in event:
+            if self.valid_keys is None or event['KEYDOWN'][0] in self.valid_keys:
+                self.active_keys.add(event['KEYDOWN'][0])
+        if 'KEYUP' in event:
+            self.active_keys.remove(event['KEYUP'][0])
+
+        action_code = self.key_act_map.get(frozenset(self.active_keys))
+        if action_code is None:
+            action_code = 0
+        self.humanAction = action_code
    
     def update_entry(self, update_dict:dict):
         '''

@@ -8,10 +8,10 @@ project:
   events:
     startServerStep: 1
     stopServerStep: 17
-  id: exp-pong-binary-feedback
+  id: exp-mario-binary-feedback
   live: true
   maxRuntime: 90
-  name: pong_binary_feedback
+  name: mario_binary_feedback
   researcher: Edan Meyer
   ssl:
     fullchain: SSL/fullchain.pem
@@ -19,8 +19,8 @@ project:
     sslBucket: projects.irll
   steps:
     1: consentForm.html
-    2: initialPongSurvey.html
-    3: pongPlayInstructions.html
+    2: initialMarioSurvey.html
+    3: lunarMarioPlayInstructions.html
     4: game
     5: round2of3.html
     6: game
@@ -40,36 +40,48 @@ project:
   useAWS: false
 trial:
   actionBufferLifespan: 1
-  actionSpace:
-  - noop
-  - fire
-  - up
-  - down
-  - rightfire
-  - leftfire
+  advancedActionSpace:
+  - []
+  - - ArrowRight
+  - - ArrowRight
+    - z
+  - - ArrowRight
+    - x
+  - - ArrowRight
+    - z
+    - x
+  - - z
+  - - ArrowLeft
+  - - ArrowLeft
+    - z
+  - - ArrowLeft
+    - x
+  - - ArrowLeft
+    - z
+    - x
+  - - ArrowDown
+  - - ArrowUp
   allowFrameRateChange: false
   bucket: projects.irll
   dataFile: episode
   frameRateStepSize: 5
   frameskip: 1
-  game: ALE/Pong-v5
+  game: SuperMarioBros-v0
   give_feedback_ui:
   - start
   - stop
   - pause
   - good
   - bad
-  maxEpisodeFrames: 300
+  maxEpisodeFrames: 14400
   maxEpisodes: 1
   maxFrameRate: 60
   minFrameRate: 1
   play_game_ui:
-  - up
-  - down
   - start
   - stop
   - pause
-  projectId: exp-pong-binary-feedback
+  projectId: exp-mario-binary-feedback
   s3upload: true
   startingFrameRate: 60
   trial_types:
@@ -79,3 +91,10 @@ trial:
   - give_feedback
   - give_feedback
   - give_feedback
+  validKeys:
+  - ArrowRight
+  - ArrowLeft
+  - ArrowDown
+  - ArrowUp
+  - z
+  - x

@@ -10,10 +10,10 @@ project:
   events:
     startServerStep: 1 # int ? #this
     stopServerStep: 17
-  id: exp-pong-binary-feedback # Letters, Numbers and '-' only! #only lower case #change this
+  id: exp-mario-binary-feedback # Letters, Numbers and '-' only! #only lower case #change this
   live: True # bool
   maxRuntime: 90 # int in minutes.
-  name: pong_binary_feedback # str #change this 
+  name: mario_binary_feedback # str #change this 
   researcher: Edan Meyer
   ssl:
     fullchain: SSL/fullchain.pem # path to fullchain.pem file excluding bucket name
@@ -22,8 +22,8 @@ project:
 
   steps: #in the step file folder # any number of steps needed with corresponding filenames
     1: consentForm.html
-    2: initialPongSurvey.html
-    3: pongPlayInstructions.html
+    2: initialMarioSurvey.html
+    3: lunarMarioPlayInstructions.html
     4: game
     5: round2of3.html
     6: game
@@ -52,16 +52,23 @@ trial:
   actionBufferLifespan: 1 # int
   maxEpisodes: 1 # int
   maxEpisodeFrames: 14400 # 60 * 60 * 4, 4 min at 60 FPS
-  game: ALE/Pong-v5 # full environment name
+  game: SuperMarioBros-v0 # full environment name
   dataFile: episode # episode or trial
   s3upload: True
-  actionSpace: # the appropriate action space for environment. Order matters
-    - noop
-    - fire
-    - up
-    - down
-    - rightfire
-    - leftfire
+  validKeys: ['ArrowRight', 'ArrowLeft', 'ArrowDown', 'ArrowUp', 'z', 'x'] # All keys that the player can use
+  advancedActionSpace: # the appropriate action space for environment. Order matters
+    - []
+    - ['ArrowRight']
+    - ['ArrowRight', 'z']
+    - ['ArrowRight', 'x']
+    - ['ArrowRight', 'z', 'x']
+    - ['z']
+    - ['ArrowLeft']
+    - ['ArrowLeft', 'z']
+    - ['ArrowLeft', 'x']
+    - ['ArrowLeft', 'z', 'x']
+    - ['ArrowDown']
+    - ['ArrowUp']
   frameRateStepSize: 5 # int Optional if allowFrameRateChange = False
   minFrameRate: 1 # int Optional if allowFrameRateChange = False
   maxFrameRate: 60 # int Optional if allowFrameRateChange = False

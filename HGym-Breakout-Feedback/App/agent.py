@@ -12,6 +12,9 @@ of these functions, adapt as required for individual research goals.
 import pickle
 import gym
 from gym.wrappers import TimeLimit
+from nes_py.wrappers import JoypadSpace
+import gym_super_mario_bros
+from gym_super_mario_bros.actions import COMPLEX_MOVEMENT
 
 class Agent():
     '''
@@ -31,6 +34,9 @@ class Agent():
         '''
         if 'ALE/' in game:
             self.env = gym.make(game, frameskip=frameskip, repeat_action_probability=0, full_action_space=False)
+        elif 'SuperMarioBros-' in game:
+            self.env = gym_super_mario_bros.make(game)
+            self.env = JoypadSpace(self.env, COMPLEX_MOVEMENT)
         else:
             self.env = gym.make(game)
 
