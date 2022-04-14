@@ -1,63 +1,49 @@
 trial:
   actionBufferLifespan: 1
+  advancedActionSpace:
+  - []
+  - - ArrowRight
+  - - ArrowRight
+    - z
+  - - ArrowRight
+    - x
+  - - ArrowRight
+    - z
+    - x
+  - - z
+  - - ArrowLeft
+  - - ArrowLeft
+    - z
+  - - ArrowLeft
+    - x
+  - - ArrowLeft
+    - z
+    - x
+  - - ArrowDown
+  - - ArrowUp
   allowFrameRateChange: false
   bucket: projects.irll
-  continuousActionSpace:
-  - - null
-    - - 0
-      - 0
-  - - []
-    - - 0
-      - 0
-  - - - ArrowLeft
-    - - 0
-      - -1
-  - - - ArrowRight
-    - - 0
-      - 1
-  - - - ArrowLeft
-      - ArrowRight
-    - - 0
-      - 0
-  - - - ArrowUp
-    - - 1
-      - 0
-  - - - ArrowLeft
-      - ArrowUp
-    - - 1
-      - -1
-  - - - ArrowRight
-      - ArrowUp
-    - - 1
-      - 1
-  - - - ArrowLeft
-      - ArrowRight
-      - ArrowUp
-    - - 1
-      - 0
   dataFile: episode
   frameRateStepSize: 5
   frameskip: 1
-  game: LunarLanderContinuous-v2
+  game: SuperMarioBros-v0
   give_feedback_ui:
   - start
   - stop
   - pause
   - good
   - bad
+  maxEpisodeFrames: 14400
   maxEpisodes: 1
   maxFrameRate: 60
   minFrameRate: 1
   play_game_ui:
-  - left
-  - right
-  - up
   - start
   - stop
   - pause
-  projectId: exp-lunar-lander-binary-feedback
+  projectId: exp-mario-binary-feedback
   s3upload: true
-  startingFrameRate: 15
+  startingFrameRate: 60
   trial_types:
   - play_game
   - play_game
@@ -66,6 +52,9 @@ trial:
   - give_feedback
   - give_feedback
   validKeys:
-  - ArrowLeft
   - ArrowRight
+  - ArrowLeft
+  - ArrowDown
   - ArrowUp
+  - z
+  - x

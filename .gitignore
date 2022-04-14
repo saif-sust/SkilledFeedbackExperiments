@@ -3,7 +3,7 @@
 **/Trials
 **/ReplayData/**
 **/AllReplayData/**
-*.env
+**.env
 *.pem
 *.log
 *trial_counter.json
