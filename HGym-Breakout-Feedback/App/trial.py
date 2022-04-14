@@ -3,6 +3,7 @@ import _pickle as cPickle
 from PIL import Image
 from io import BytesIO
 from agent import Agent, ReplayAgent
+import os
 
 
 
@@ -36,16 +37,24 @@ class Trial():
         self.path = None
         self.trial_type = TYPE_TRIAL_MAPPING[type(self)]
         self.trial_idx = trial_idx
-
         if self.config.get('advancedActionSpace') is not None:
             self.active_keys = set([])
             self.valid_keys = set(self.config.get('validKeys'))
             action_keys = self.config.get('advancedActionSpace')
             self.key_act_map = {frozenset(key_set): i for i, key_set in enumerate(action_keys)}
+            self.humanAction = self.key_act_map.get(None, 0)
+            self.action_space_type = 'advanced'
+        elif self.config.get('continuousActionSpace') is not None:
+            self.active_keys = set([])
+            self.valid_keys = set(self.config.get('validKeys'))
+            self.key_act_map = {frozenset(k) if k is not None else None: v \
+                for k, v in self.config.get('continuousActionSpace')}
+            self.humanAction = self.key_act_map.get(None, 0)
             self.action_space_type = 'advanced'
         else:
             self.action_space_type = 'simple'
 
+        print(self.humanAction)
         self.start()
         self.run()
 
@@ -226,16 +235,16 @@ class Trial():
         '''
         Translates action to int and resets action buffer if action !=0
         '''
-# {'KeyboardEvent': {'KEYDOWN': [' ', 32]}, 'frameCount': 111, 'frameId': 111}
         if 'KEYDOWN' in event:
             if self.valid_keys is None or event['KEYDOWN'][0] in self.valid_keys:
                 self.active_keys.add(event['KEYDOWN'][0])
         if 'KEYUP' in event:
-            self.active_keys.remove(event['KEYUP'][0])
+            if event['KEYUP'][0] in self.active_keys:
+                self.active_keys.remove(event['KEYUP'][0])
 
         action_code = self.key_act_map.get(frozenset(self.active_keys))
         if action_code is None:
-            action_code = 0
+            action_code = self.key_act_map.get(None, 0)
         self.humanAction = action_code
    
     def update_entry(self, update_dict:dict):
@@ -341,7 +350,11 @@ class FeedbackTrial(Trial):
         super().__init__(pipe, trial_idx)
 
     def _get_trial_path(self, trial_idx):
-        return f'{TRIAL_DATA_DIR}/replay_data_{trial_idx}'
+        exp_names = os.listdir(TRIAL_DATA_DIR)
+        if len(exp_names) != 1:
+            raise ValueError(f'Expected 1 experiment, got {len(exp_names)}: {exp_names}')
+        exp_name = exp_names[0]
+        return f'{TRIAL_DATA_DIR}/{exp_name}/replay_data_{trial_idx}'
 
     def start(self):
         trial_path = self._get_trial_path(self.trial_idx)

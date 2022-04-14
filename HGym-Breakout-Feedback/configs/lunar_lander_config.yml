@@ -51,20 +51,26 @@ trial:
     - give_feedback
   actionBufferLifespan: 1 # int
   maxEpisodes: 1 # int
-  game: LunarLander-v2 # full environment name
+  game: LunarLanderContinuous-v2 # full environment name
   dataFile: episode # episode or trial
   s3upload: True
-  actionSpace: # the appropriate action space for environment. Order matters
-    - noop
-    - left
-    - up
-    - right
+  validKeys: ['ArrowLeft', 'ArrowRight', 'ArrowUp']
+  continuousActionSpace: # the appropriate action space for environment. Order matters
+    - [null, [0, 0]]
+    - [[], [0, 0]]
+    - [['ArrowLeft'], [0, -1]]
+    - [['ArrowRight'], [0, 1]]
+    - [['ArrowLeft', 'ArrowRight'], [0, 0]]
+    - [['ArrowUp'], [1, 0]]
+    - [['ArrowLeft', 'ArrowUp'], [1, -1]]
+    - [['ArrowRight', 'ArrowUp'], [1, 1]]
+    - [['ArrowLeft', 'ArrowRight', 'ArrowUp'], [1, 0]]
   frameRateStepSize: 5 # int Optional if allowFrameRateChange = False
   minFrameRate: 1 # int Optional if allowFrameRateChange = False
   maxFrameRate: 60 # int Optional if allowFrameRateChange = False
   frameskip: 1 # int Optional how many frames to skip for playing game phase
   allowFrameRateChange: False # bool
-  startingFrameRate: 60 # int Required
+  startingFrameRate: 15 # int Required
   play_game_ui: # to include ui button set to True, False buttons will not be shown
     left: True
     right: True

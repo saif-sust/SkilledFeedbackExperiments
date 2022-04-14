@@ -1,6 +1,7 @@
 import argparse
 import json, yaml, boto3, os, logging, sys, subprocess
 from dotenv import load_dotenv
+import shutil
 
 load_dotenv()
 
@@ -223,6 +224,33 @@ def set_trial_config(trialConfig, projectConfig):
     logging.info('trialConfig.yml Created')
     return trialConfig
 
+def prepare_replay_files(project_config):
+    all_replay_dir = 'App/AllReplayData'
+    replay_dir = 'App/ReplayData'
+
+    logging.info('Preparing Replay Files...')
+    exp_name = project_config['name']
+
+    game_replay_dir = os.path.join(replay_dir, exp_name)
+    if os.path.exists(game_replay_dir):
+        logging.info('Found existing replay data for this experiment. ' 
+            + f'If you want to overwrite it, you must manually delete the folder: "{game_replay_dir}".')
+        return
+    elif os.path.exists(replay_dir):
+        # Delete and recreate the replay_dir
+        shutil.rmtree(replay_dir)
+        os.mkdir(replay_dir)
+    else:
+        os.mkdir(replay_dir)
+
+    src_replay_dir = os.path.join(all_replay_dir, exp_name)
+    if not os.path.exists(src_replay_dir):
+        logging.warning(f'No replay data found for experiment "{exp_name}". Feedback trials will not work.')
+        return
+
+    # Copy replay data from source directory to experiment directory
+    shutil.copytree(src_replay_dir, game_replay_dir)
+
 def set_dotenv():
     logging.info('Copying .env to App...')
     os.system('cp .env App/.env')
@@ -234,13 +262,14 @@ def get_args():
     parser.add_argument('-c', '--config', help='Path to config file.', default='config.yml')
     args = parser.parse_args()
     return args
-
+        
 def main():
     #logging.basicConfig(filename='Logs/updateProject.log', level=logging.INFO)
     args = get_args()
     logging.basicConfig(stream=sys.stdout, level=logging.INFO)
     projectConfig, trialConfig = load_config(args.config)
     trialConfig = set_trial_config(trialConfig, projectConfig)
+    prepare_replay_files(projectConfig)
     if projectConfig.get('useAWS'):
         check_dependencies()
         steps = check_steps(projectConfig)

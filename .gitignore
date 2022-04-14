@@ -2,7 +2,10 @@
 **/__pycache__
 **/Trials
 **/ReplayData/**
+**/AllReplayData/**
+*.env
 *.pem
 *.log
+*trial_counter.json
 
 !.gitkeep

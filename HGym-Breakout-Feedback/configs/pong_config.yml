@@ -71,8 +71,8 @@ trial:
   play_game_ui: # to include ui button set to True, False buttons will not be shown
     left: False
     right: False
-    up: False
-    down: False
+    up: True
+    down: True
     start: True
     stop: True # TODO: Change back to false
     pause: True

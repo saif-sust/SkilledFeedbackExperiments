@@ -8,10 +8,10 @@ project:
   events:
     startServerStep: 1
     stopServerStep: 17
-  id: exp-mario-binary-feedback
+  id: exp-lunar-lander-binary-feedback
   live: true
   maxRuntime: 90
-  name: mario_binary_feedback
+  name: lunar_lander_binary_feedback
   researcher: Edan Meyer
   ssl:
     fullchain: SSL/fullchain.pem
@@ -19,8 +19,8 @@ project:
     sslBucket: projects.irll
   steps:
     1: consentForm.html
-    2: initialMarioSurvey.html
-    3: lunarMarioPlayInstructions.html
+    2: initialLunarLanderSurvey.html
+    3: lunarLanderPlayInstructions.html
     4: game
     5: round2of3.html
     6: game
@@ -40,50 +40,64 @@ project:
   useAWS: false
 trial:
   actionBufferLifespan: 1
-  advancedActionSpace:
-  - []
-  - - ArrowRight
-  - - ArrowRight
-    - z
-  - - ArrowRight
-    - x
-  - - ArrowRight
-    - z
-    - x
-  - - z
-  - - ArrowLeft
-  - - ArrowLeft
-    - z
-  - - ArrowLeft
-    - x
-  - - ArrowLeft
-    - z
-    - x
-  - - ArrowDown
-  - - ArrowUp
   allowFrameRateChange: false
   bucket: projects.irll
+  continuousActionSpace:
+  - - null
+    - - 0
+      - 0
+  - - []
+    - - 0
+      - 0
+  - - - ArrowLeft
+    - - 0
+      - -1
+  - - - ArrowRight
+    - - 0
+      - 1
+  - - - ArrowLeft
+      - ArrowRight
+    - - 0
+      - 0
+  - - - ArrowUp
+    - - 1
+      - 0
+  - - - ArrowLeft
+      - ArrowUp
+    - - 1
+      - -1
+  - - - ArrowRight
+      - ArrowUp
+    - - 1
+      - 1
+  - - - ArrowLeft
+      - ArrowRight
+      - ArrowUp
+    - - 1
+      - 0
   dataFile: episode
   frameRateStepSize: 5
   frameskip: 1
-  game: SuperMarioBros-v0
+  game: LunarLanderContinuous-v2
   give_feedback_ui:
   - start
   - stop
   - pause
   - good
   - bad
-  maxEpisodeFrames: 14400
   maxEpisodes: 1
   maxFrameRate: 60
   minFrameRate: 1
   play_game_ui:
+  - left
+  - right
+  - up
   - start
   - stop
   - pause
-  projectId: exp-mario-binary-feedback
+  projectId: exp-lunar-lander-binary-feedback
   s3upload: true
-  startingFrameRate: 60
+  startingFrameRate: 15
   trial_types:
   - play_game
   - play_game
@@ -92,9 +106,6 @@ trial:
   - give_feedback
   - give_feedback
   validKeys:
-  - ArrowRight
   - ArrowLeft
-  - ArrowDown
+  - ArrowRight
   - ArrowUp
-  - z
-  - x
