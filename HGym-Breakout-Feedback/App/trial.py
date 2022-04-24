@@ -1,4 +1,5 @@
-import numpy, json, shortuuid, time, base64, yaml, logging
+import copy, numpy, json, shortuuid, time, base64, yaml, logging
+import pickle
 import _pickle as cPickle
 from PIL import Image
 from io import BytesIO
@@ -18,7 +19,7 @@ def get_trial_type(trial_type):
     return TRIAL_TYPE_MAPPING[trial_type]
 
 class Trial():
-    def __init__(self, pipe, trial_idx=0):
+    def __init__(self, pipe, trial_idx=0, data_trial_type='episode'):
         self.config = load_config()
         self.pipe = pipe
         self.frameId = 0
@@ -314,7 +315,7 @@ class Trial():
         comment/uncomment the below lines as desired.
         '''
         if self.config.get('dataFile') == 'trial':
-            self.record.append(self.nextEntry)
+            self.record.append(copy.deepcopy(self.nextEntry))
         else:
             cPickle.dump(self.nextEntry, self.outfile)
             self.nextEntry = {}
@@ -345,8 +346,9 @@ class Trial():
 TRIAL_DATA_DIR = 'ReplayData'
 
 class FeedbackTrial(Trial):
-    def __init__(self, pipe, trial_idx=0):
+    def __init__(self, pipe, trial_idx=0, data_file_type='episode'):
         self.human_feedback = 0
+        self.data_file_type = data_file_type
         super().__init__(pipe, trial_idx)
 
     def _get_trial_path(self, trial_idx):
@@ -361,7 +363,7 @@ class FeedbackTrial(Trial):
         logging.info(f'Starting feedback trial {self.trial_idx} with path {trial_path}')
 
         self.agent = ReplayAgent()
-        self.agent.start(trial_path) # self.config.get('game'))
+        self.agent.start(trial_path, self.data_file_type) # self.config.get('game'))
 
     def take_step(self):
         '''

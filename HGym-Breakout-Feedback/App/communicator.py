@@ -98,7 +98,7 @@ async def handler(websocket, path, config):
     trial_cls = get_trial_type(trial_type)
     logging.info('------- STARTING TRIAL WITH TYPE: ' + trial_type + ' ' + str(trial_counter) + ' -------')
     update_trial_counter(trial_type)
-    userTrial = Process(target=trial_cls, args=(downPipe, trial_type_counter))
+    userTrial = Process(target=trial_cls, args=(downPipe, trial_type_counter, config.get('dataFile', 'episode')))
     userTrial.start()
     consumerTask = asyncio.ensure_future(consumer_handler(websocket, upPipe))
     producerTask = asyncio.ensure_future(producer_handler(websocket, upPipe))
