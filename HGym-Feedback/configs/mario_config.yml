@@ -1,5 +1,5 @@
 project:
-  useAWS: False 
+  useAWS: True 
   awsSetup:
     bucket: projects.irll # working bucket in AWS
     region: ca-central-1 # working AWS region
@@ -23,7 +23,7 @@ project:
   steps: #in the step file folder # any number of steps needed with corresponding filenames
     1: consentForm.html
     2: initialMarioSurvey.html
-    3: lunarMarioPlayInstructions.html
+    3: marioPlayInstructions.html
     4: game
     5: round2of3.html
     6: game
@@ -81,7 +81,7 @@ trial:
     up: False
     down: False
     start: True
-    stop: True # TODO: Change back to false
+    stop: False # TODO: Change back to false
     pause: True
     reset: False
     trainOffline: False
@@ -97,7 +97,7 @@ trial:
     up: False
     down: False
     start: True
-    stop: True # TODO: Change back to false
+    stop: False # TODO: Change back to false
     pause: True
     reset: False
     trainOffline: False

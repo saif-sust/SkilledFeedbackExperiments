@@ -1,5 +1,5 @@
 project:
-  useAWS: False 
+  useAWS: True 
   awsSetup:
     bucket: projects.irll # working bucket in AWS
     region: ca-central-1 # working AWS region
@@ -10,10 +10,10 @@ project:
   events:
     startServerStep: 1 # int ? #this
     stopServerStep: 17
-  id: exp-pacman-binary-feedback # Letters, Numbers and '-' only! #only lower case #change this
+  id: exp-pong-binary-feedback # Letters, Numbers and '-' only! #only lower case #change this
   live: True # bool
   maxRuntime: 90 # int in minutes.
-  name: pacman_binary_feedback # str #change this 
+  name: pong_binary_feedback # str #change this 
   researcher: Edan Meyer
   ssl:
     fullchain: SSL/fullchain.pem # path to fullchain.pem file excluding bucket name
@@ -22,8 +22,8 @@ project:
 
   steps: #in the step file folder # any number of steps needed with corresponding filenames
     1: consentForm.html
-    2: initialPacmanSurvey.html
-    3: pacmanPlayInstructions.html
+    2: initialPongSurvey.html
+    3: pongPlayInstructions.html
     4: game
     5: round2of3.html
     6: game
@@ -52,20 +52,16 @@ trial:
   actionBufferLifespan: 1 # int
   maxEpisodes: 1 # int
   maxEpisodeFrames: 14400 # 60 * 60 * 4, 4 min at 60 FPS
-  game: ALE/MsPacman-v5 # full environment name
+  game: ALE/Pong-v5 # full environment name
   dataFile: episode # episode or trial
   s3upload: True
-  validKeys: ['ArrowRight', 'ArrowLeft', 'ArrowDown', 'ArrowUp'] # All keys that the player can use
-  advancedActionSpace: # the appropriate action space for environment. Order matters
-    - []
-    - ['ArrowUp']
-    - ['ArrowRight']
-    - ['ArrowLeft']
-    - ['ArrowDown']
-    - ['ArrowUp', 'ArrowRight']
-    - ['ArrowUp', 'ArrowLeft']
-    - ['ArrowDown', 'ArrowRight']
-    - ['ArrowDown', 'ArrowLeft']
+  actionSpace: # the appropriate action space for environment. Order matters
+    - noop
+    - fire
+    - up
+    - down
+    - rightfire
+    - leftfire
   frameRateStepSize: 5 # int Optional if allowFrameRateChange = False
   minFrameRate: 1 # int Optional if allowFrameRateChange = False
   maxFrameRate: 60 # int Optional if allowFrameRateChange = False
@@ -73,12 +69,12 @@ trial:
   allowFrameRateChange: False # bool
   startingFrameRate: 60 # int Required
   play_game_ui: # to include ui button set to True, False buttons will not be shown
-    left: True
-    right: True
+    left: False
+    right: False
     up: True
     down: True
     start: True
-    stop: True # TODO: Change back to false
+    stop: False # TODO: Change back to false
     pause: True
     reset: False
     trainOffline: False
@@ -94,7 +90,7 @@ trial:
     up: False
     down: False
     start: True
-    stop: True # TODO: Change back to false
+    stop: False # TODO: Change back to false
     pause: True
     reset: False
     trainOffline: False

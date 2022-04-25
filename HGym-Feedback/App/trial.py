@@ -19,7 +19,7 @@ def get_trial_type(trial_type):
     return TRIAL_TYPE_MAPPING[trial_type]
 
 class Trial():
-    def __init__(self, pipe, trial_idx=0, data_trial_type='episode'):
+    def __init__(self, pipe, trial_idx=0, global_trial_idx=0, data_trial_type='episode'):
         self.config = load_config()
         self.pipe = pipe
         self.frameId = 0
@@ -38,6 +38,7 @@ class Trial():
         self.path = None
         self.trial_type = TYPE_TRIAL_MAPPING[type(self)]
         self.trial_idx = trial_idx
+        self.global_trial_idx = global_trial_idx
         if self.config.get('advancedActionSpace') is not None:
             self.active_keys = set([])
             self.valid_keys = set(self.config.get('validKeys'))
@@ -335,10 +336,12 @@ class Trial():
         for episode or full-trial logging.
         '''
         if self.config.get('dataFile') == 'trial':
-            filename = f'trial_{self.userId}'
+            filename = '{}_trial_{}_user_{}'.format(
+                self.trial_type, self.trial_idx, self.userId)
         else:
-            filename = f'episode_{self.episode}_user_{self.userId}'
-        path = 'Trials/'+filename
+            filename = '{}_trial_{}_episode_{}_user_{}'.format(
+                self.trial_type, self.trial_idx, self.episode, self.userId)
+        path = 'Trials/' + filename
         self.outfile = open(path, 'ab')
         self.filename = filename
         self.path = path
@@ -346,10 +349,10 @@ class Trial():
 TRIAL_DATA_DIR = 'ReplayData'
 
 class FeedbackTrial(Trial):
-    def __init__(self, pipe, trial_idx=0, data_file_type='episode'):
+    def __init__(self, pipe, trial_idx=0, global_trial_idx=0, data_file_type='episode'):
         self.human_feedback = 0
         self.data_file_type = data_file_type
-        super().__init__(pipe, trial_idx)
+        super().__init__(pipe, trial_idx, global_trial_idx, data_file_type)
 
     def _get_trial_path(self, trial_idx):
         exp_names = os.listdir(TRIAL_DATA_DIR)

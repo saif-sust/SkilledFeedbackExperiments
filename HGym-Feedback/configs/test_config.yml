@@ -9,11 +9,11 @@ project:
 
   events:
     startServerStep: 1 # int ? #this
-    stopServerStep: 17
-  id: exp-pong-binary-feedback # Letters, Numbers and '-' only! #only lower case #change this
+    stopServerStep: 13
+  id: exp-mario-binary-feedback # Letters, Numbers and '-' only! #only lower case #change this
   live: True # bool
   maxRuntime: 90 # int in minutes.
-  name: pong_binary_feedback # str #change this 
+  name: mario_binary_feedback # str #change this 
   researcher: Edan Meyer
   ssl:
     fullchain: SSL/fullchain.pem # path to fullchain.pem file excluding bucket name
@@ -22,22 +22,18 @@ project:
 
   steps: #in the step file folder # any number of steps needed with corresponding filenames
     1: consentForm.html
-    2: initialPongSurvey.html
-    3: pongPlayInstructions.html
+    2: initialMarioSurvey.html
+    3: marioPlayInstructions.html
     4: game
     5: round2of3.html
     6: game
-    7: round3of3.html
+    7: feedbackInstructions.html
     8: game
-    9: feedbackInstructions.html
+    9: round2of3.html
     10: game
-    11: round2of3.html
-    12: game
-    13: round3of3.html
-    14: game
-    15: postGameSurvey.html
-    16: uuidScreen.html
-    17: endScreen.html
+    11: postGameSurvey.html
+    12: uuidScreen.html
+    13: endScreen.html
     finalStep: endScreen.html #put the file name of the last step again here # required, filename can be same as last numbered step
   teamMembers: Edan # str
 
@@ -45,23 +41,28 @@ trial:
   trial_types:
     - play_game
     - play_game
-    - play_game
-    - give_feedback
     - give_feedback
     - give_feedback
   actionBufferLifespan: 1 # int
   maxEpisodes: 1 # int
   maxEpisodeFrames: 14400 # 60 * 60 * 4, 4 min at 60 FPS
-  game: ALE/Pong-v5 # full environment name
+  game: SuperMarioBros-v0 # full environment name
   dataFile: episode # episode or trial
   s3upload: True
-  actionSpace: # the appropriate action space for environment. Order matters
-    - noop
-    - fire
-    - up
-    - down
-    - rightfire
-    - leftfire
+  validKeys: ['ArrowRight', 'ArrowLeft', 'ArrowDown', 'ArrowUp', 'z', 'x'] # All keys that the player can use
+  advancedActionSpace: # the appropriate action space for environment. Order matters
+    - []
+    - ['ArrowRight']
+    - ['ArrowRight', 'z']
+    - ['ArrowRight', 'x']
+    - ['ArrowRight', 'z', 'x']
+    - ['z']
+    - ['ArrowLeft']
+    - ['ArrowLeft', 'z']
+    - ['ArrowLeft', 'x']
+    - ['ArrowLeft', 'z', 'x']
+    - ['ArrowDown']
+    - ['ArrowUp']
   frameRateStepSize: 5 # int Optional if allowFrameRateChange = False
   minFrameRate: 1 # int Optional if allowFrameRateChange = False
   maxFrameRate: 60 # int Optional if allowFrameRateChange = False
@@ -71,8 +72,8 @@ trial:
   play_game_ui: # to include ui button set to True, False buttons will not be shown
     left: False
     right: False
-    up: True
-    down: True
+    up: False
+    down: False
     start: True
     stop: True # TODO: Change back to false
     pause: True

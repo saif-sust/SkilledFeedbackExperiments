@@ -1,5 +1,5 @@
 project:
-  useAWS: False 
+  useAWS: True 
   awsSetup:
     bucket: projects.irll # working bucket in AWS
     region: ca-central-1 # working AWS region
@@ -77,7 +77,7 @@ trial:
     up: True
     down: False
     start: True
-    stop: True # TODO: Change back to false
+    stop: False # TODO: Change back to false
     pause: True
     reset: False
     trainOffline: False
@@ -93,7 +93,7 @@ trial:
     up: False
     down: False
     start: True
-    stop: True # TODO: Change back to false
+    stop: False # TODO: Change back to false
     pause: True
     reset: False
     trainOffline: False
