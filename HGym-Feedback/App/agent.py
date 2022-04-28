@@ -11,6 +11,7 @@ of these functions, adapt as required for individual research goals.
 '''
 import copy
 import pickle
+import gzip
 import gym
 from gym.wrappers import TimeLimit
 from nes_py.wrappers import JoypadSpace
@@ -65,11 +66,11 @@ class Agent():
             rgb_observation = self.env.render('rgb_array')
             envState = {
                 'observation': rgb_observation, 'raw_observation': observation,
-                'reward': reward, 'done': done, 'info': info}
+                'action': action, 'reward': reward, 'done': done, 'info': info}
         else:
             envState = {
                 'observation': observation, 'reward': reward,
-                'done': done, 'info': info}
+                'action': action, 'done': done, 'info': info}
         return envState
     
     def render(self):
@@ -112,8 +113,8 @@ class Agent():
 
 def read_replay_buffer(path, trial_type):
     step_data = []
-    with open(path, 'rb') as f:
-        while f.peek():
+    with gzip.open(path, 'rb') as f:
+        while f.peek(1):
             step_data.append(pickle.load(f))
     if trial_type == 'trial':
         step_data = step_data[0]

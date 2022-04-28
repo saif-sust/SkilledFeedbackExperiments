@@ -56,7 +56,6 @@ class Trial():
         else:
             self.action_space_type = 'simple'
 
-        print(self.humanAction)
         self.start()
         self.run()
 
@@ -177,6 +176,10 @@ class Trial():
             self.handle_action(message['action'])
         elif 'KeyboardEvent' in message and self.action_space_type == 'advanced':
             self.handle_advanced_action(message['KeyboardEvent'])
+
+        if 'action' in message:
+            self.nextEntry['str_action'] = message['action']
+            del message['action']
         self.update_entry(message)
 
     def handle_command(self, command:str):
@@ -319,7 +322,7 @@ class Trial():
             self.record.append(copy.deepcopy(self.nextEntry))
         else:
             cPickle.dump(self.nextEntry, self.outfile)
-            self.nextEntry = {}
+        self.nextEntry = {}
 
     def save_record(self):
         '''
@@ -359,7 +362,7 @@ class FeedbackTrial(Trial):
         if len(exp_names) != 1:
             raise ValueError(f'Expected 1 experiment, got {len(exp_names)}: {exp_names}')
         exp_name = exp_names[0]
-        return f'{TRIAL_DATA_DIR}/{exp_name}/replay_data_{trial_idx}'
+        return f'{TRIAL_DATA_DIR}/{exp_name}/replay_data_{trial_idx}.gz'
 
     def start(self):
         trial_path = self._get_trial_path(self.trial_idx)
@@ -375,7 +378,7 @@ class FeedbackTrial(Trial):
         Checks for DONE from Agent/Env
         '''
         envState = self.agent.step(self.humanAction)
-        self.update_entry({'step': envState['step'], 'feedback': self.human_feedback})
+        self.update_entry({'done': envState['done'], 'step': envState['step'], 'feedback': self.human_feedback})
         self.human_feedback = 0
         self.save_entry()
         if envState['done']:

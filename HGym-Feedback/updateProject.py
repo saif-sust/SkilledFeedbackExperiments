@@ -152,8 +152,8 @@ def check_image(projectConfig):
         return True
     return False
 
-def push_image(projectConfig, imageExists):
-    if imageExists:
+def push_image(projectConfig, imageExists, auto_deploy=False):
+    if imageExists and not auto_deploy:
         push = input('Do you want to deploy docker now? [y/n]').strip().lower()
         if push not in ('y','yes'):
             return
@@ -260,6 +260,9 @@ def set_dotenv():
 def get_args():
     parser = argparse.ArgumentParser(description='Create a new project.')
     parser.add_argument('-c', '--config', help='Path to config file.', default='config.yml')
+    parser.add_argument('-d', '--deploy', help='Whether or not to deploy with Docker',
+                        dest='deploy', action='store_true')
+    parser.set_defaults(deploy=False)
     args = parser.parse_args()
     return args
         
@@ -281,7 +284,7 @@ def main():
         imageExists = check_image(projectConfig)
         get_ssl_cert(projectConfig)
         set_dotenv()
-        push_image(projectConfig, imageExists)
+        push_image(projectConfig, imageExists, args.deploy)
         if not check_task_definition(projectConfig):
             register_task_definition(projectConfig)
     with open('.projectConfig.yml','w') as outfile:
