@@ -1,6 +1,6 @@
 **/data
 **/__pycache__
-**/Trials
+**/Trials/*
 **/ReplayData/**
 **/AllReplayData/**
 **.env

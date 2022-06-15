@@ -9,7 +9,7 @@ project:
 
   events:
     startServerStep: 1 # int ? #this
-    stopServerStep: 17
+    stopServerStep: 9
   id: exp-lunar-lander-binary-feedback # Letters, Numbers and '-' only! #only lower case #change this
   live: True # bool
   maxRuntime: 90 # int in minutes.
@@ -25,30 +25,17 @@ project:
     2: initialLunarLanderSurvey.html
     3: lunarLanderPlayInstructions.html
     4: game
-    5: round2of3.html
+    5: feedbackInstructions.html
     6: game
-    7: round3of3.html
-    8: game
-    9: feedbackInstructions.html
-    10: game
-    11: round2of3.html
-    12: game
-    13: round3of3.html
-    14: game
-    15: postGameSurvey.html
-    16: uuidScreen.html
-    17: endScreen.html
+    7: postGameSurvey.html
+    8: uuidScreen.html
+    9: endScreen.html
     finalStep: endScreen.html #put the file name of the last step again here # required, filename can be same as last numbered step
   teamMembers: Edan # str
 
 trial:
   trial_types:
-    - give_feedback
     - play_game
-    - play_game
-    - play_game
-    - give_feedback
-    - give_feedback
     - give_feedback
   actionBufferLifespan: 1 # int
   maxEpisodes: 3 # int
@@ -56,7 +43,7 @@ trial:
   dataFile: trial # episode or trial
   s3upload: True
   validKeys: ['ArrowLeft', 'ArrowRight', 'ArrowUp']
-  continuousActionSpace: # the appropriate action space for environment. Order matters
+  continuousActionSpace: # the appropriate action space for environment.
     - [null, [0, 0]]
     - [[], [0, 0]]
     - [['ArrowLeft'], [0, -1]]

@@ -1,22 +1,17 @@
 project:
   awsSetup:
     bucket: projects.irll
-    containerName: exp-pong-binary-feedback
     cpu: 2
     memory: 10
     region: ca-central-1
-    repository: exp-pong-binary-feedback
-    repositoryUri: 237796709103.dkr.ecr.ca-central-1.amazonaws.com/exp-pong-binary-feedback
     rootDomain: irll.net
-  bucket: projects.irll
-  ecsTask: exp-pong-binary-feedback
   events:
     startServerStep: 1
-    stopServerStep: 17
-  id: exp-pong-binary-feedback
+    stopServerStep: 9
+  id: exp-lunar-lander-binary-feedback
   live: true
   maxRuntime: 90
-  name: pong_binary_feedback
+  name: lunar_lander_binary_feedback
   researcher: Edan Meyer
   ssl:
     fullchain: SSL/fullchain.pem
@@ -24,61 +19,81 @@ project:
     sslBucket: projects.irll
   steps:
     1: consentForm.html
-    2: initialPongSurvey.html
-    3: pongPlayInstructions.html
+    2: initialLunarLanderSurvey.html
+    3: lunarLanderPlayInstructions.html
     4: game
-    5: round2of3.html
+    5: feedbackInstructions.html
     6: game
-    7: round3of3.html
-    8: game
-    9: feedbackInstructions.html
-    10: game
-    11: round2of3.html
-    12: game
-    13: round3of3.html
-    14: game
-    15: postGameSurvey.html
-    16: uuidScreen.html
-    17: endScreen.html
+    7: postGameSurvey.html
+    8: uuidScreen.html
+    9: endScreen.html
     finalStep: endScreen.html
   teamMembers: Edan
-  useAWS: true
+  useAWS: false
 trial:
   actionBufferLifespan: 1
-  actionSpace:
-  - noop
-  - fire
-  - up
-  - down
-  - rightfire
-  - leftfire
   allowFrameRateChange: false
   bucket: projects.irll
-  dataFile: episode
+  continuousActionSpace:
+  - - null
+    - - 0
+      - 0
+  - - []
+    - - 0
+      - 0
+  - - - ArrowLeft
+    - - 0
+      - -1
+  - - - ArrowRight
+    - - 0
+      - 1
+  - - - ArrowLeft
+      - ArrowRight
+    - - 0
+      - 0
+  - - - ArrowUp
+    - - 1
+      - 0
+  - - - ArrowLeft
+      - ArrowUp
+    - - 1
+      - -1
+  - - - ArrowRight
+      - ArrowUp
+    - - 1
+      - 1
+  - - - ArrowLeft
+      - ArrowRight
+      - ArrowUp
+    - - 1
+      - 0
+  dataFile: trial
   frameRateStepSize: 5
   frameskip: 1
-  game: ALE/Pong-v5
+  game: LunarLanderContinuous-v2
   give_feedback_ui:
   - start
+  - stop
   - pause
   - good
   - bad
-  maxEpisodeFrames: 14400
-  maxEpisodes: 1
+  maxEpisodes: 3
   maxFrameRate: 60
   minFrameRate: 1
   play_game_ui:
+  - left
+  - right
   - up
-  - down
   - start
+  - stop
   - pause
-  projectId: exp-pong-binary-feedback
+  projectId: exp-lunar-lander-binary-feedback
   s3upload: true
-  startingFrameRate: 60
+  startingFrameRate: 20
   trial_types:
   - play_game
-  - play_game
-  - play_game
   - give_feedback
-  - give_feedback
-  - give_feedback
+  validKeys:
+  - ArrowLeft
+  - ArrowRight
+  - ArrowUp

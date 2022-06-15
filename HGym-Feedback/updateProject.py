@@ -271,6 +271,7 @@ def main():
     args = get_args()
     logging.basicConfig(stream=sys.stdout, level=logging.INFO)
     projectConfig, trialConfig = load_config(args.config)
+    print(trialConfig)
     trialConfig = set_trial_config(trialConfig, projectConfig)
     prepare_replay_files(projectConfig)
     if projectConfig.get('useAWS'):
