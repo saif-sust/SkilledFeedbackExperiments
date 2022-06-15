@@ -6,7 +6,7 @@ BUCKET_NAME = 'projects.irll'
 SAVE_DIR = 'data/trials'
 PROJECT_IDS = [
     'exp-mario-binary-feedback',
-    'exp-breakout-binary-feedback',
+    'exp-pacman-binary-feedback',
     'exp-pong-binary-feedback',
     'exp-lunar-lander-binary-feedback',
 ]

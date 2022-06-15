@@ -9,11 +9,11 @@ project:
 
   events:
     startServerStep: 1 # int ? #this
-    stopServerStep: 13
-  id: exp-mario-binary-feedback # Letters, Numbers and '-' only! #only lower case #change this
+    stopServerStep: 17
+  id: exp-lunar-lander-binary-feedback # Letters, Numbers and '-' only! #only lower case #change this
   live: True # bool
   maxRuntime: 90 # int in minutes.
-  name: mario_binary_feedback # str #change this 
+  name: lunar_lander_binary_feedback # str #change this 
   researcher: Edan Meyer
   ssl:
     fullchain: SSL/fullchain.pem # path to fullchain.pem file excluding bucket name
@@ -22,57 +22,60 @@ project:
 
   steps: #in the step file folder # any number of steps needed with corresponding filenames
     1: consentForm.html
-    2: initialMarioSurvey.html
-    3: marioPlayInstructions.html
+    2: initialLunarLanderSurvey.html
+    3: lunarLanderPlayInstructions.html
     4: game
     5: round2of3.html
     6: game
-    7: feedbackInstructions.html
+    7: round3of3.html
     8: game
-    9: round2of3.html
+    9: feedbackInstructions.html
     10: game
-    11: postGameSurvey.html
-    12: uuidScreen.html
-    13: endScreen.html
+    11: round2of3.html
+    12: game
+    13: round3of3.html
+    14: game
+    15: postGameSurvey.html
+    16: uuidScreen.html
+    17: endScreen.html
     finalStep: endScreen.html #put the file name of the last step again here # required, filename can be same as last numbered step
   teamMembers: Edan # str
 
 trial:
   trial_types:
+    - give_feedback
     - play_game
     - play_game
+    - play_game
+    - give_feedback
     - give_feedback
     - give_feedback
   actionBufferLifespan: 1 # int
-  maxEpisodes: 1 # int
-  maxEpisodeFrames: 14400 # 60 * 60 * 4, 4 min at 60 FPS
-  game: SuperMarioBros-v0 # full environment name
-  dataFile: episode # episode or trial
+  maxEpisodes: 3 # int
+  game: LunarLanderContinuous-v2 # full environment name
+  dataFile: trial # episode or trial
   s3upload: True
-  validKeys: ['ArrowRight', 'ArrowLeft', 'ArrowDown', 'ArrowUp', 'z', 'x'] # All keys that the player can use
-  advancedActionSpace: # the appropriate action space for environment. Order matters
-    - []
-    - ['ArrowRight']
-    - ['ArrowRight', 'z']
-    - ['ArrowRight', 'x']
-    - ['ArrowRight', 'z', 'x']
-    - ['z']
-    - ['ArrowLeft']
-    - ['ArrowLeft', 'z']
-    - ['ArrowLeft', 'x']
-    - ['ArrowLeft', 'z', 'x']
-    - ['ArrowDown']
-    - ['ArrowUp']
+  validKeys: ['ArrowLeft', 'ArrowRight', 'ArrowUp']
+  continuousActionSpace: # the appropriate action space for environment. Order matters
+    - [null, [0, 0]]
+    - [[], [0, 0]]
+    - [['ArrowLeft'], [0, -1]]
+    - [['ArrowRight'], [0, 1]]
+    - [['ArrowLeft', 'ArrowRight'], [0, 0]]
+    - [['ArrowUp'], [1, 0]]
+    - [['ArrowLeft', 'ArrowUp'], [1, -1]]
+    - [['ArrowRight', 'ArrowUp'], [1, 1]]
+    - [['ArrowLeft', 'ArrowRight', 'ArrowUp'], [1, 0]]
   frameRateStepSize: 5 # int Optional if allowFrameRateChange = False
   minFrameRate: 1 # int Optional if allowFrameRateChange = False
   maxFrameRate: 60 # int Optional if allowFrameRateChange = False
   frameskip: 1 # int Optional how many frames to skip for playing game phase
   allowFrameRateChange: False # bool
-  startingFrameRate: 60 # int Required
+  startingFrameRate: 20 # int Required
   play_game_ui: # to include ui button set to True, False buttons will not be shown
-    left: False
-    right: False
-    up: False
+    left: True
+    right: True
+    up: True
     down: False
     start: True
     stop: True # TODO: Change back to false
