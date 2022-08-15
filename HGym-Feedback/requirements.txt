@@ -1,6 +1,6 @@
 gym[atari,accept-rom-license]==0.23.1 # 0.17.2
 gym[box2d]==0.23.1
-Box2D==2.3.10
+Box2D==2.3.2
 atari-py==0.2.6
 shortuuid==1.0.1
 asyncio==3.4.3
