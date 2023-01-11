@@ -6,7 +6,7 @@ Supervised by [Matt Taylor](https://drmatttaylor.net) and Neda Navi
 For the Intelligent Robot Learning Laboratory [(IRLL)](https://irll.ca) at the University of Alberta [(UofA)](https://ualberta.ca)
 Supported by the Alberta Machine Intelligence Institure [(AMII)](https://amii.ca)
 
-This is a modified version of the [original HIPPO Gym](https://github.com/IRLL/HIPPO_Gym) that has been adapted by [Edan Meyer](https://github.com/ejmejm).
+This is a modified version of the [original HIPPO Gym](https://github.com/IRLL/HIPPO_Gym) that has been adapted by [Edan Meyer](https://github.com/ejmejm) and [Saiful] (https://github.com/saif-sust).
 This adapted version supports multiple advanced features like play vs. feedback trial types and different options for user input.
 
 ## Purpose:
